@@ -144,50 +144,62 @@ export default function Dashboard() {
   // Busca datos subidos manualmente con filtros independientes
   // ============================================
   const queryData = async () => {
-    setQueryResult("⏳ Buscando datos...");
+  setQueryResult("⏳ Buscando datos...");
 
-    try {
-      const params = new URLSearchParams();
-      
-      // Solo agregar params que tengan valor
-      if (queryFilters.start_date) params.append("start_date", queryFilters.start_date);
-      if (queryFilters.end_date) params.append("end_date", queryFilters.end_date);
-      if (queryFilters.type) params.append("type", queryFilters.type);  // ✔ CORREGIDO
-      if (queryFilters.lat) params.append("lat", queryFilters.lat);
-      if (queryFilters.lon) params.append("lon", queryFilters.lon);
+  try {
+    const params = new URLSearchParams();
 
-      const url = `http://localhost:8000/api/v1/data/query${params.toString() ? '?' + params.toString() : ''}`;
+    // Solo agregar parámetros que tengan valor
+    if (queryFilters.start_date)
+      params.append("start_date", queryFilters.start_date);
 
-      const res = await fetch(url, {
-        method: "GET",
-        headers: getAuthHeaders()
-      });
+    if (queryFilters.sensor_type)
+      params.append("sensor_type", queryFilters.sensor_type);
 
-      if (!res.ok) {
-        const error = await res.json();
-        setQueryResult("❌ Error del servidor:\n\n" + JSON.stringify(error, null, 2));
-        return;
-      }
+    if (queryFilters.lat)
+      params.append("lat", queryFilters.lat);
 
-      const data = await res.json();
-      
-      if (data.total_found === 0) {
-        setQueryResult(
-          `🔍 No se encontraron datos con estos filtros.\n\n` +
-          `Filtros aplicados:\n${JSON.stringify(data.filters_applied, null, 2)}\n\n` +
-          `💡 Intenta subir algunos datos primero en la sección "Upload Data"`
-        );
-      } else {
-        setQueryResult(
-          `✅ Se encontraron ${data.total_found} registros\n\n` +
-          `📋 Filtros aplicados:\n${JSON.stringify(data.filters_applied, null, 2)}\n\n` +
-          `🎯 Resultados:\n${JSON.stringify(data.results, null, 2)}`
-        );
-      }
-    } catch (err) {
-      setQueryResult("❌ Error de conexión:\n" + err.message);
+    if (queryFilters.lon)
+      params.append("lon", queryFilters.lon);
+
+    const url = `http://localhost:8000/api/v1/data/query${
+      params.toString() ? "?" + params.toString() : ""
+    }`;
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: getAuthHeaders()
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      setQueryResult(
+        "❌ Error del servidor:\n\n" +
+        JSON.stringify(error, null, 2)
+      );
+      return;
     }
+
+    const data = await res.json();
+
+    if (data.total_found === 0) {
+      setQueryResult(
+        `🔍 No se encontraron datos con estos filtros.\n\n` +
+        `Filtros aplicados:\n${JSON.stringify(data.filters_applied, null, 2)}\n\n` +
+        `💡 Intenta subir algunos datos primero en la sección "Upload Data"`
+      );
+    } else {
+      setQueryResult(
+        `✅ Se encontraron ${data.total_found} registros\n\n` +
+        `📋 Filtros aplicados:\n${JSON.stringify(data.filters_applied, null, 2)}\n\n` +
+        `🎯 Resultados:\n${JSON.stringify(data.results, null, 2)}`
+      );
+    }
+  } catch (err) {
+    setQueryResult("❌ Error de conexión:\n" + err.message);
+  }
 };
+
 
   // ============================================
   // RENDER
@@ -208,7 +220,7 @@ export default function Dashboard() {
           <button onClick={() => showSection("simulation")} style={btnNav}>Simulation</button>
           <button onClick={() => showSection("mission")} style={btnNav}>Mission Status</button>
           <button onClick={() => showSection("query")} style={btnNav}>Data Query</button>
-          <button onClick={() => showSection("upload")} style={btnNav}>Upload Data</button>
+          
         </nav>
       </header>
 
@@ -267,84 +279,89 @@ export default function Dashboard() {
         )}
 
         {/* DATA QUERY */}
-        {activeSection === "query" && (
-          <section style={section}>
-            <h3>🔎 Buscar Datos por Filtros</h3>
-            <p style={{ color: "#666", marginBottom: "15px" }}>
-            Busca datos subidos manualmente. Puedes usar uno o varios filtros de manera independiente.
-            </p>
+{activeSection === "query" && (
+  <section style={section}>
+    <h3>🔎 Buscar Datos por Filtros</h3>
 
-    <label>📅 Fecha Inicio (opcional)</label>
+    {/* FECHA DE INICIO */}
+    <label>📅 Fecha de Inicio</label>
     <input
       type="date"
-      value={queryFilters.start_date}
-      onChange={(e) => setQueryFilters({ ...queryFilters, start_date: e.target.value })}
+      value={queryFilters.start_date || ""}
+      onChange={(e) =>
+        setQueryFilters({ ...queryFilters, start_date: e.target.value })
+      }
       style={inputStyle}
     />
 
-    <label>📅 Fecha Fin (opcional)</label>
-    <input
-      type="date"
-      value={queryFilters.end_date}
-      onChange={(e) => setQueryFilters({ ...queryFilters, end_date: e.target.value })}
-      style={inputStyle}
-    />
-
-    <label>📡 Tipo de Sensor (opcional)</label>
+    {/* TIPO DE DRON */}
+    <label>📡 Tipo de Dron</label>
     <select
-      value={queryFilters.type}
-      onChange={(e) => setQueryFilters({ ...queryFilters, type: e.target.value })}
+      value={queryFilters.sensor_type || ""}
+      onChange={(e) =>
+        setQueryFilters({ ...queryFilters, sensor_type: e.target.value })
+      }
       style={inputStyle}
     >
-      <option value="">Todos los sensores</option>
-      <option value="RGB">RGB</option>
-      <option value="Thermal">Thermal</option>
-      <option value="Inspection">Inspection</option>
-      <option value="Surveillance">Surveillance</option>
+      <option value="">Todos</option>
+      <option value="mapping">Mapping</option>
+      <option value="thermal">Thermal</option>
+      <option value="inspection">Inspection</option>
+      <option value="surveillance">Surveillance</option>
     </select>
 
-    <label>🌍 Latitud GPS (opcional)</label>
+    {/* LATITUD */}
+    <label>🌍 Latitud (del vuelo)</label>
     <input
       type="number"
       step="0.000001"
-      placeholder="Ej: 4.1533"
-      value={queryFilters.lat}
-      onChange={(e) => setQueryFilters({ ...queryFilters, lat: e.target.value })}
+      placeholder="Ejemplo: 4.123456"
+      value={queryFilters.lat || ""}
+      onChange={(e) =>
+        setQueryFilters({ ...queryFilters, lat: e.target.value })
+      }
       style={inputStyle}
     />
 
-    <label>🌍 Longitud GPS (opcional)</label>
+    {/* LONGITUD */}
+    <label>🌍 Longitud (del vuelo)</label>
     <input
       type="number"
       step="0.000001"
-      placeholder="Ej: -73.6345"
-      value={queryFilters.lon}
-      onChange={(e) => setQueryFilters({ ...queryFilters, lon: e.target.value })}
+      placeholder="Ejemplo: -74.123456"
+      value={queryFilters.lon || ""}
+      onChange={(e) =>
+        setQueryFilters({ ...queryFilters, lon: e.target.value })
+      }
       style={inputStyle}
     />
 
+    {/* BOTONES */}
     <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
-      <button style={btn} onClick={queryData}>🔎 Buscar Datos</button>
-      <button 
-        style={{...btn, background: "#6c757d"}} 
+      <button style={btn} onClick={queryData}>
+        🔎 Buscar Datos
+      </button>
+
+      <button
+        style={{ ...btn, background: "#6c757d" }}
         onClick={() => {
           setQueryFilters({
             start_date: "",
-            end_date: "",
-            type: "",
+            sensor_type: "",
             lat: "",
             lon: ""
           });
           setQueryResult("");
         }}
       >
-        🔄 Limpiar Filtros
+        🔄 Limpiar
       </button>
     </div>
 
     {queryResult && <div style={resultBox}>{queryResult}</div>}
   </section>
 )}
+
 
 
         {/* UPLOAD DATA */}
