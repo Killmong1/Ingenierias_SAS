@@ -304,9 +304,9 @@ export default function Dashboard() {
       style={inputStyle}
     >
       <option value="">Todos</option>
-      <option value="mapping">Mapping</option>
+      <option value="lidar">Lidar</option>
       <option value="thermal">Thermal</option>
-      <option value="inspection">Inspection</option>
+      <option value="multispectral">Multispectral</option>
       <option value="surveillance">Surveillance</option>
     </select>
 
