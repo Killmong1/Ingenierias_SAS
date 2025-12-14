@@ -1,5 +1,6 @@
 // src/App.jsx
 import { HashRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
 
 // Páginas de usuario
 import Login from "./pages/Login";
@@ -18,9 +19,9 @@ import UploadPage from "./pages/UploadPage";
 import QueryPage from "./pages/QueryPage";
 
 export default function App() {
-  // 🔥 DESPERTAR EL SERVIDOR AL CARGAR LA APP
+  // 🔥 useEffect DENTRO de la función App
   useEffect(() => {
-    // Ping inmediato al backend para despertarlo
+    // Despertar el servidor al cargar la app
     fetch('https://prueba-tech-125.onrender.com/docs')
       .then(() => console.log('✅ Servidor despierto'))
       .catch(() => console.log('⏳ Despertando servidor...'));
@@ -29,12 +30,11 @@ export default function App() {
     const keepAlive = setInterval(() => {
       fetch('https://prueba-tech-125.onrender.com/docs')
         .catch(() => {});
-    }, 5 * 60 * 1000); // 5 minutos
+    }, 5 * 60 * 1000);
 
     return () => clearInterval(keepAlive);
-  }, []);}
+  }, []);
 
-export default function App() {
   return (
     <HashRouter>
       <Routes>
