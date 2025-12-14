@@ -102,18 +102,18 @@ class UserLogin(BaseModel):
 # CORS
 # -------------------------------------------------------------
 app.add_middleware(
-    CORSMiddleware,    
+    CORSMiddleware,
+    allow_origins = [
+        "https://prueba-tech-rl2t.onrender.com",
+        "http://localhost:5173",
+        "https://killmong1.github.io",    
+        "https://prueba-tech-125.onrender.com"
+    ],    # <- Aquí falta una coma
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],  # Déjalo solo con "*"
-    allow_origins = [
-    "https://prueba-tech-rl2t.onrender.com",
-    "http://localhost:5173",
-    "https://killmong1.github.io",    
-    "https://prueba-tech-125.onrender.com"
-]
-
+    allow_headers=["*"],
 )
+
 
 #
 # =============================================================
