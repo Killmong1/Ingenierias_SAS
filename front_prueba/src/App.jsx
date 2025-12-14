@@ -18,6 +18,23 @@ import UploadPage from "./pages/UploadPage";
 import QueryPage from "./pages/QueryPage";
 
 export default function App() {
+  // 🔥 DESPERTAR EL SERVIDOR AL CARGAR LA APP
+  useEffect(() => {
+    // Ping inmediato al backend para despertarlo
+    fetch('https://prueba-tech-125.onrender.com/docs')
+      .then(() => console.log('✅ Servidor despierto'))
+      .catch(() => console.log('⏳ Despertando servidor...'));
+
+    // Mantener vivo cada 5 minutos
+    const keepAlive = setInterval(() => {
+      fetch('https://prueba-tech-125.onrender.com/docs')
+        .catch(() => {});
+    }, 5 * 60 * 1000); // 5 minutos
+
+    return () => clearInterval(keepAlive);
+  }, []);}
+
+export default function App() {
   return (
     <HashRouter>
       <Routes>
