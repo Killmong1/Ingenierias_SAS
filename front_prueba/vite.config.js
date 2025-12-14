@@ -10,4 +10,5 @@ export default defineConfig({
       },
     }),
   ],
+  base: '/prueba_tech/',  // ← AGREGAR ESTA LÍNEA
 })
