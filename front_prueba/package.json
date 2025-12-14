@@ -2,7 +2,7 @@
   "name": "front_prueba",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://prueba-tech-rl2t.onrender.com",
+  "homepage": "https://killmong1.github.io/prueba_tech/",
   "type": "module",
   "scripts": {
     "dev": "vite",
