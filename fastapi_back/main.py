@@ -110,7 +110,8 @@ app.add_middleware(
     "https://prueba-tech-rl2t.onrender.com",
     "http://localhost:5173",
     "https://killmong1.github.io",
-    "https://killmong1.github.io/prueba_tech/"
+    "https://killmong1.github.io/prueba_tech/",
+    "https://prueba-tech-125.onrender.com"
 ]
 
 )

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const API_BASE_URL = "https://prueba-tech-rl2t.onrender.com";
+const API_BASE_URL = "https://prueba-tech-125.onrender.com";
 
 
 export default function Dashboard() {

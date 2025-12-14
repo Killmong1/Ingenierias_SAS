@@ -1,4 +1,4 @@
-const API_URL = "https://prueba-tech-rl2t.onrender.com/api/v1";
+const API_URL = "https://prueba-tech-125.onrender.com/api/v1";
 
 // --- 1. Simular misiones ---
 export async function simulateMissions(n) {
