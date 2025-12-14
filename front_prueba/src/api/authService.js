@@ -1,7 +1,7 @@
 // src/api/authService.js
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/v1/auth";
+const API_URL = "https://prueba-tech-rl2t.onrender.com/api/v1/auth";
 
 export const signup = async (data) => {
   return axios.post(`${API_URL}/signup`, data);
