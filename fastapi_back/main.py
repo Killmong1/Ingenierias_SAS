@@ -5,12 +5,9 @@ from pydantic import BaseModel
 from typing import Optional
 from jose import jwt, JWTError
 from passlib.context import CryptContext
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 import random
 import datetime
-import os
-import sys
+
 
 
 
@@ -111,42 +108,6 @@ app.add_middleware(
     allow_headers=["*"],  # Déjalo solo con "*"
     allow_origins=["*"],  
 )
-
-# =============================================================
-#            SERVIR FRONTEND REACT (VITE BUILD)
-# =============================================================
-
-# Soporte para PyInstaller
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath("..")  # subimos a PRUEBA_TECH
-
-    return os.path.join(base_path, relative_path)
-
-
-FRONTEND_DIST = resource_path("front_prueba/dist")
-
-# Archivos estáticos (assets)
-app.mount(
-    "/assets",
-    StaticFiles(directory=os.path.join(FRONTEND_DIST, "assets")),
-    name="assets",
-)
-
-# React index.html
-@app.get("/")
-def serve_react():
-    return FileResponse(os.path.join(FRONTEND_DIST, "index.html"))
-
-# Catch-all para React Router
-@app.get("/{full_path:path}")
-def serve_react_routes(full_path: str):
-    file_path = os.path.join(FRONTEND_DIST, full_path)
-    if os.path.exists(file_path):
-        return FileResponse(file_path)
-    return FileResponse(os.path.join(FRONTEND_DIST, "index.html"))
 
 
 # =============================================================
@@ -362,6 +323,3 @@ def get_simulations(user=Depends(get_current_user)):
     return simulations_db
 
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
