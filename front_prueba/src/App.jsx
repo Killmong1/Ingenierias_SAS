@@ -1,12 +1,12 @@
 // src/App.jsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 // Páginas de usuario
 import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 
-// Tus componentes anteriores (los mantenemos)
+// Componentes anteriores
 import UploadData from "./components/UploadDataForm";
 import MissionStatus from "./components/MissionStatus";
 import QueryData from "./components/QueryData";
@@ -19,7 +19,7 @@ import QueryPage from "./pages/QueryPage";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         {/* Rutas públicas */}
         <Route path="/" element={<Login />} />
@@ -32,12 +32,12 @@ export default function App() {
         <Route path="/upload" element={<UploadPage />} />
         <Route path="/query" element={<QueryPage />} />
 
-        {/* Rutas originales que tú ya tenías */}
+        {/* Rutas originales */}
         <Route path="/upload-data" element={<UploadData />} />
         <Route path="/mission-status" element={<MissionStatus />} />
         <Route path="/data-query" element={<QueryData />} />
         <Route path="/simulation" element={<Simulation />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
