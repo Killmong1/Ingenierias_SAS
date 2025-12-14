@@ -108,10 +108,10 @@ app.add_middleware(
     allow_headers=["*"],  # Déjalo solo con "*"
     allow_origins=[
         "https://prueba-tech-rl2t.onrender.com",
-        "http://prueba-tech-rl2t.onrender.com"
+        "http://prueba-tech-rl2t.onrender.com",
         "http://localhost:5173",
         "https://killmong1.github.io/prueba_tech/",
-        "http://killmong1.github.io/prueba_tech/"
+        "http://killmong1.github.io/prueba_tech/",
         "https://killmong1.github.io/prueba_tech",
         "http://killmong1.github.io/prueba_tech"
     ] 
